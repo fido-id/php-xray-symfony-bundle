@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+
+<ruleset name="PHP_CodeSniffer">
+
+    <description>PHPCS configuration file.</description>
+
+
+    <file>src</file>
+    <file>tests</file>
+
+    <!-- Our base rule: set to PSR12 \w a couple of exclusion-->
+    <rule ref="PSR12"/>
+
+    <!-- We like column property -->
+    <rule ref="PSR2">
+        <exclude name="PSR2.Classes.PropertyDeclaration.SpacingAfterType"/>
+    </rule>
+
+    <!-- Test related CS -->
+    <rule ref="PSR1.Methods.CamelCapsMethodName.NotCamelCaps">
+        <exclude-pattern>tests/*</exclude-pattern>
+    </rule>
+
+    <!-- Exclude all PEAR rules -->
+    <rule ref="PEAR">
+        <exclude name="PEAR"/>
+    </rule>
+
+    <rule ref="Zend">
+        <exclude name="Zend"/>
+    </rule>
+
+    <!-- Exclude all Squiz rules -->
+    <rule ref="Squiz">
+        <exclude name="Squiz"/>
+    </rule>
+</ruleset>
