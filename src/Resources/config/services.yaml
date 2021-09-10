@@ -1,0 +1,51 @@
+services:
+  _defaults:
+    autowire: false
+    autoconfigure: false
+    public: true
+
+  Fido\PHPXray\Segment:
+    class: Fido\PHPXray\Segment
+    arguments:
+      - 'placeholder'
+
+  Fido\PHPXray\Submission\DaemonSegmentSubmitter:
+    class: Fido\PHPXray\Submission\DaemonSegmentSubmitter
+    shared: false
+
+  Fido\PHPXrayBundle\FidoPHPXrayBundle:
+    class: Fido\PHPXrayBundle\FidoPHPXrayBundle
+
+  Fido\PHPXrayBundle\EventSubscriber\RequestSubscriber:
+    class: Fido\PHPXrayBundle\EventSubscriber\RequestSubscriber
+    arguments:
+      - '@Fido\PHPXray\Segment'
+    tags:
+      - { name: kernel.event_subscriber }
+
+  Fido\PHPXrayBundle\EventSubscriber\ResponseSubscriber:
+    class: Fido\PHPXrayBundle\EventSubscriber\ResponseSubscriber
+    arguments:
+      - '@Fido\PHPXray\Segment'
+    tags:
+      - { name: kernel.event_subscriber }
+
+  Fido\PHPXrayBundle\EventSubscriber\TerminateSubscriber:
+    class: Fido\PHPXrayBundle\EventSubscriber\TerminateSubscriber
+    arguments:
+      - '@Fido\PHPXray\Segment'
+      - '@Fido\PHPXray\Submission\DaemonSegmentSubmitter'
+    tags:
+      - { name: kernel.event_subscriber }
+
+  GuzzleHttp\HandlerStack:
+    shared: false
+    class: GuzzleHttp\HandlerStack
+    factory: [ GuzzleHttp\HandlerStack, create ]
+    calls:
+      - [ push, [ '@Fido\PHPXrayBundle\Guzzle\Middleware\XrayMiddleware' ] ]
+
+  Fido\PHPXrayBundle\Guzzle\Middleware\XrayMiddleware:
+    class: Fido\PHPXrayBundle\Guzzle\Middleware\XrayMiddleware
+    arguments:
+      - '@Fido\PHPXray\Segment'

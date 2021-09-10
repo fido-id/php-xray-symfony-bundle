@@ -1,0 +1,33 @@
+name: PullRequest
+on:
+  pull_request
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    name: Checkout & Build & Test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Docker Build
+        id: docker_build
+        uses: docker/build-push-action@v4
+        with:
+          context: ./
+          file: ./Dockerfile
+          push: false
+          tags: php-xray-symfony-bundle
+      - name: Test
+        uses: addnab/docker-run-action@v3
+        with:
+          image: php-xray-symfony-bundle
+          options: --user root --volume ${{ github.workspace }}:${{ github.workspace }} --workdir ${{ github.workspace }}
+          run: |
+            composer test
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage.xml
+          verbose: true
+          fail_ci_if_error: true
