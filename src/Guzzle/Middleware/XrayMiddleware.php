@@ -26,6 +26,11 @@ class XrayMiddleware
 
             $this->segment->addSubsegment($httpSegment);
 
+            if (array_key_exists('parent_segment', $options)) {
+                $parent = $options['parent_segment'];
+                $httpSegment->setParentId($parent->getId());
+            }
+
             $request = $request->withAddedHeader('X-Amzn-Trace-Id', "Root={$this->segment->getTraceId()};Parent={$httpSegment->getId()};Sampled=1");
 
             $response = $handler($request, $options);
