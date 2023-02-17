@@ -36,11 +36,11 @@
     "php": "^8.0",
     "symfony/framework-bundle": "^4.3||^5.0||^6.0",
     "symfony/yaml": "^4.3||^5.0||^6.0",
-    "fido/php-xray": "^0.1",
+    "fido/php-xray": "^0.2.0",
     "ext-json": "*",
-    "guzzlehttp/guzzle": "^7",
-    "aws/aws-sdk-php": "^3.255",
-    "webmozart/assert": "^1.11"
+    "guzzlehttp/guzzle": "^7.0.0",
+    "aws/aws-sdk-php": "^3.255.0",
+    "webmozart/assert": "^1.11.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^8.5||^9.0",
