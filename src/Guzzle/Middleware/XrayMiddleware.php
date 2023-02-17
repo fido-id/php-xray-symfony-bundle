@@ -36,7 +36,7 @@ class XrayMiddleware
             $response = $handler($request, $options);
 
             $response->then(function (ResponseInterface $response) use ($httpSegment) {
-                $httpSegment->closeWithPsrResponse($response);
+                $httpSegment->closeWithPsrResponse($response, withContent: false);
             });
 
             return $response;
