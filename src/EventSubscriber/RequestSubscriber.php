@@ -5,7 +5,6 @@ namespace Fido\PHPXrayBundle\EventSubscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\Log\Logger;
 use Fido\PHPXray\Segment;
 use Webmozart\Assert\Assert;
 
@@ -26,8 +25,6 @@ class RequestSubscriber implements EventSubscriberInterface
 
     public function onKernelRequest(RequestEvent $event): void
     {
-        $logger = new Logger();
-
         $requestContext = $event->getRequest()->server->get('LAMBDA_INVOCATION_CONTEXT');
         Assert::nullOrString($requestContext);
 
@@ -41,10 +38,6 @@ class RequestSubscriber implements EventSubscriberInterface
         $parent = '/Parent=([0-9A-Fa-f]{16})/';
         \preg_match($parent, $lambdaContext['traceId'] ?? null, $parentMatches);
         $parentId = $parentMatches[1] ?? null;
-
-        $logger->debug("[RequestEvent] TraceID: $traceId");
-        $logger->debug("[RequestEvent] ParentID: $parentId");
-        $logger->debug("[RequestEvent] LambdaContext: $requestContext");
 
         $this->segment->setTraceId($traceId);
         $this->segment->setParentId($parentId);
