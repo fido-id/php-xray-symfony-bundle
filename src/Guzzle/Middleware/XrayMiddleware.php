@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fido\PHPXrayBundle\Guzzle\Middleware;
 
 use Fido\PHPXray\HttpSegment;

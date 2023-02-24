@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fido\PHPXrayBundle\EventSubscriber;
 
 use Fido\PHPXray\Segment;
