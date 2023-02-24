@@ -32,11 +32,11 @@ class RequestSubscriber implements EventSubscriberInterface
         Assert::nullOrIsArray($lambdaContext);
 
         $root = '/Root=(\d-[0-9A-Fa-f]{8}-[0-9A-Fa-f]{24})/';
-        \preg_match($root, $lambdaContext['traceId'] ?? null, $rootMatches);
+        \preg_match($root, $lambdaContext['traceId'] ?? '', $rootMatches);
         $traceId = $rootMatches[1] ?? self::generateTraceId();
 
         $parent = '/Parent=([0-9A-Fa-f]{16})/';
-        \preg_match($parent, $lambdaContext['traceId'] ?? null, $parentMatches);
+        \preg_match($parent, $lambdaContext['traceId'] ?? '', $parentMatches);
         $parentId = $parentMatches[1] ?? null;
 
         $this->segment->setTraceId($traceId);
