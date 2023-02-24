@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Fido\PHPXrayBundle\DependencyInjection;
 
 use Aws\DynamoDb\DynamoDbClient;
+use Fido\PHPXray\Segment;
 use GuzzleHttp\Client;
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\Config\FileLocator;
-use Fido\PHPXray\Segment;
 
 class FidoPHPXrayExtension extends Extension
 {

@@ -6,6 +6,7 @@ use Fido\PHPXray\HttpSegment;
 use Fido\PHPXray\Segment;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Webmozart\Assert\Assert;
 
 class XrayMiddleware
 {
@@ -23,6 +24,20 @@ class XrayMiddleware
                 url: $request->getUri()->__toString(),
                 method: $request->getMethod(),
             );
+
+            if (array_key_exists('annotations', $options)) {
+                Assert::isArray($options['annotations']);
+                foreach ($options['annotations'] as $key => $value) {
+                    $httpSegment->addAnnotation($key, $value);
+                }
+            }
+
+            if (array_key_exists('metadata', $options)) {
+                Assert::isArray($options['metadata']);
+                foreach ($options['metadata'] as $key => $value) {
+                    $httpSegment->addMetadata($key, $value);
+                }
+            }
 
             $this->segment->addSubsegment($httpSegment);
 

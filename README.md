@@ -4,7 +4,7 @@
 [![PHP Version](https://img.shields.io/badge/php->=8.0-blue)](https://www.php.net/releases/8.0/en.php)
 [![Coverage Status][Master coverage image]](https://app.codecov.io/gh/fido-id/php-xray-symfony-bundle)
 
-[Master coverage image]: https://codecov.io/gh/fido-id/php-xray/branch/master/graph/badge.svg?token=YSPMGJVP77
+[Master coverage image]: https://codecov.io/gh/fido-id/php-xray-symfony-bundle/branch/master/graph/badge.svg?token=YSPMGJVP77
 
 A Symfony Bundle for [AWS X-Ray](https://docs.aws.amazon.com/xray/latest/devguide/aws-xray.html) for PHP 8.x
 [LICENSE](LICENSE.md)

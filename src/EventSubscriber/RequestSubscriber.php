@@ -2,10 +2,10 @@
 
 namespace Fido\PHPXrayBundle\EventSubscriber;
 
+use Fido\PHPXray\Segment;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Fido\PHPXray\Segment;
 use Webmozart\Assert\Assert;
 
 class RequestSubscriber implements EventSubscriberInterface

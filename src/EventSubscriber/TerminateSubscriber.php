@@ -2,8 +2,8 @@
 
 namespace Fido\PHPXrayBundle\EventSubscriber;
 
-use Fido\PHPXray\Submission\SegmentSubmitter;
 use Fido\PHPXray\Segment;
+use Fido\PHPXray\Submission\SegmentSubmitter;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\TerminateEvent;
 use Symfony\Component\HttpKernel\KernelEvents;

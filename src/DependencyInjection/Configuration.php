@@ -15,6 +15,7 @@ class Configuration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
             ->children()
+
                 ->scalarNode('segment_name')
                     ->isRequired()
                 ->end() // scalarNode('segment_name')
@@ -28,16 +29,6 @@ class Configuration implements ConfigurationInterface
                         ->end() // children()
                     ->end() // arrayPrototype()
                 ->end() // arrayNode('clients')
-
-                ->arrayNode('dynamodb')
-                    ->arrayPrototype()
-                        ->children()
-                            ->scalarNode('table_name')
-                                ->isRequired()
-                            ->end() // scalarNode('table_name')
-                        ->end() // children()
-                    ->end() // arrayPrototype()
-                ->end() // arrayNode('dynamodb')
 
             ->end(); // children()
         return $treeBuilder;
