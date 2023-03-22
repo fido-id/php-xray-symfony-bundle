@@ -29,10 +29,5 @@ class FidoPHPXrayExtension extends Extension
             $definition = $container->getDefinition(Client::class);
             $definition->replaceArgument(0, $client_config['base_uri']);
         }
-
-        foreach ($config['dynamodb'] as $dynamo_config) {
-            $definition = $container->getDefinition(DynamoDbClient::class);
-            $definition->replaceArgument(0, $dynamo_config['table_name']);
-        }
     }
 }
