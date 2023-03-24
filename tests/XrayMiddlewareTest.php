@@ -18,7 +18,7 @@ class XrayMiddlewareTest extends FunctionalTestCase
     /** @test */
     public function will_return_proper_response(): void
     {
-        $handlerStack = self::getContainer()->get(HandlerStack::class);
+        $handlerStack = self::getContainer()->get('fido.guzzle.handler_stack');
         $container = [];
         $history = Middleware::history($container);
 
@@ -30,7 +30,7 @@ class XrayMiddlewareTest extends FunctionalTestCase
         $segment->setTraceId('1-00000000-000000000000000000000001');
         $client->request(
             'GET',
-            'https://ifconfig.me/all.json',
+            'https://httpbin.org/status/200',
             [],
         );
         $segment->end();
@@ -42,30 +42,33 @@ class XrayMiddlewareTest extends FunctionalTestCase
         self::assertInstanceOf(HttpSegment::class, $subsegments[0]);
 
         self::assertEquals('GET', $httpSegment['http']['request']['method']);
-        self::assertEquals('https://ifconfig.me/all.json', $httpSegment['http']['request']['url']);
+        self::assertEquals('https://httpbin.org/status/200', $httpSegment['http']['request']['url']);
         self::assertEquals(200, $httpSegment['http']['response']['status']);
 
         self::assertStringMatchesFormat('Root=1-00000000-000000000000000000000001;Parent=%s;Sampled=1', $container[0]['request']->getHeader('X-Amzn-Trace-Id')[0]);
     }
 
-    /** @test */
-    public function will_return_proper_response_with_a_custom_parent_segment(): void
+    /**
+     * @test
+     * @dataProvider responses_dataprovider
+     */
+    public function will_return_proper_response_with_a_custom_parent_segment(string $method, string $url, int $status, array $expected): void
     {
-        $handlerStack = self::getContainer()->get(HandlerStack::class);
+        $handlerStack = self::getContainer()->get('fido.guzzle.handler_stack');
         $container = [];
         $history = Middleware::history($container);
 
         $handlerStack->push($history);
 
-        $client = new Client(['handler' => $handlerStack]);
+        $client = new Client(['handler' => $handlerStack, "http_errors" => false]);
 
         $parentSegment = self::getContainer()->get(Segment::class);
 
         $segment = self::getContainer()->get(Segment::class);
         $segment->setTraceId('1-00000000-000000000000000000000001');
         $client->request(
-            'GET',
-            'https://ifconfig.me/all.json',
+            $method,
+            $url,
             ['parent_segment' => $parentSegment],
         );
 
@@ -77,11 +80,73 @@ class XrayMiddlewareTest extends FunctionalTestCase
         self::assertCount(1, $subsegments);
         self::assertInstanceOf(HttpSegment::class, $subsegments[0]);
 
-        self::assertEquals('GET', $httpSegment['http']['request']['method']);
-        self::assertEquals('https://ifconfig.me/all.json', $httpSegment['http']['request']['url']);
-        self::assertEquals(200, $httpSegment['http']['response']['status']);
+        self::assertEquals($expected['http']['request']['method'], $httpSegment['http']['request']['method']);
+        self::assertEquals($expected['http']['request']['url'], $httpSegment['http']['request']['url']);
+        self::assertEquals($expected['http']['response']['status'], $httpSegment['http']['response']['status']);
+        self::assertEquals($expected['fault'], $httpSegment['fault'] ?? null);
+        self::assertEquals($expected['error'], $httpSegment['error'] ?? null);
 
         self::assertStringMatchesFormat('Root=1-00000000-000000000000000000000001;Parent=%s;Sampled=1', $container[0]['request']->getHeader('X-Amzn-Trace-Id')[0]);
+    }
+
+    public function responses_dataprovider()
+    {
+        return [
+            "2xx_response" => [
+                "method" => "GET",
+                "url" => "https://httpbin.org/status/200",
+                "status" => 200,
+                "expected" => [
+                    "http" => [
+                        "request" => [
+                            "method" => "GET",
+                            "url" => "https://httpbin.org/status/200",
+                        ],
+                        "response" => [
+                            "status" => 200,
+                        ],
+                    ],
+                    "fault" => null,
+                    "error" => null,
+                ],
+            ],
+            "4xx_response" => [
+                "method" => "GET",
+                "url" => "https://httpbin.org/status/404",
+                "status" => 404,
+                "expected" => [
+                    "http" => [
+                        "request" => [
+                            "method" => "GET",
+                            "url" => "https://httpbin.org/status/404",
+                        ],
+                        "response" => [
+                            "status" => 404,
+                        ],
+                    ],
+                    "fault" => null,
+                    "error" => true,
+                ],
+            ],
+            "5xx_response" => [
+                "method" => "GET",
+                "url" => "https://httpbin.org/status/502",
+                "status" => 502,
+                "expected" => [
+                    "http" => [
+                        "request" => [
+                            "method" => "GET",
+                            "url" => "https://httpbin.org/status/502",
+                        ],
+                        "response" => [
+                            "status" => 502,
+                        ],
+                    ],
+                    "fault" => true,
+                    "error" => null,
+                ],
+            ]
+        ];
     }
 
     /**
@@ -92,7 +157,7 @@ class XrayMiddlewareTest extends FunctionalTestCase
      */
     public function will_populate_segment_with_annotations_and_metadata(?array $annotations, ?array $metadata): void
     {
-        $handlerStack = self::getContainer()->get(HandlerStack::class);
+        $handlerStack = self::getContainer()->get('fido.guzzle.handler_stack');
         $container = [];
         $history = Middleware::history($container);
 
@@ -106,7 +171,7 @@ class XrayMiddlewareTest extends FunctionalTestCase
         $segment->setTraceId('1-00000000-000000000000000000000001');
         $client->request(
             'GET',
-            'https://ifconfig.me/all.json',
+            'https://httpbin.org/status/200',
             [
                 'parent_segment' => $parentSegment,
                 'annotations' => $annotations,

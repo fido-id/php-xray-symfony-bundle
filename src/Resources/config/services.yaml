@@ -38,7 +38,7 @@ services:
     tags:
       - { name: kernel.event_subscriber }
 
-  GuzzleHttp\HandlerStack:
+  fido.guzzle.handler_stack:
     shared: false
     class: GuzzleHttp\HandlerStack
     factory: [ GuzzleHttp\HandlerStack, create ]
