@@ -8,7 +8,6 @@ use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Fido\PHPXray\HttpSegment;
 use Fido\PHPXray\Segment;
 use GuzzleHttp\Client;
-use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 
 class XrayMiddlewareTest extends FunctionalTestCase
@@ -51,6 +50,7 @@ class XrayMiddlewareTest extends FunctionalTestCase
     /**
      * @test
      * @dataProvider responses_dataprovider
+     * @phpstan-ignore-next-line "Cannot resolve argument $expected of method Tests\XrayMiddlewareTest::will_return_proper_response_with_a_custom_parent_segment()."
      */
     public function will_return_proper_response_with_a_custom_parent_segment(string $method, string $url, int $status, array $expected): void
     {
@@ -89,61 +89,63 @@ class XrayMiddlewareTest extends FunctionalTestCase
         self::assertStringMatchesFormat('Root=1-00000000-000000000000000000000001;Parent=%s;Sampled=1', $container[0]['request']->getHeader('X-Amzn-Trace-Id')[0]);
     }
 
-    public function responses_dataprovider()
+    /* @phpstan-ignore-next-line "Cannot resolve argument $expected of method Tests\XrayMiddlewareTest::will_return_proper_response_with_a_custom_parent_segment()."
+     */
+    public function responses_dataprovider(): array
     {
         return [
-            "2xx_response" => [
-                "method" => "GET",
-                "url" => "https://httpbin.org/status/200",
-                "status" => 200,
-                "expected" => [
-                    "http" => [
-                        "request" => [
-                            "method" => "GET",
-                            "url" => "https://httpbin.org/status/200",
+            '2xx_response' => [
+                'method' => 'GET',
+                'url' => 'https://httpbin.org/status/200',
+                'status' => 200,
+                'expected' => [
+                    'http' => [
+                        'request' => [
+                            'method' => 'GET',
+                            'url' => 'https://httpbin.org/status/200',
                         ],
-                        "response" => [
-                            "status" => 200,
+                        'response' => [
+                            'status' => 200,
                         ],
                     ],
-                    "fault" => null,
-                    "error" => null,
+                    'fault' => null,
+                    'error' => null,
                 ],
             ],
-            "4xx_response" => [
-                "method" => "GET",
-                "url" => "https://httpbin.org/status/404",
-                "status" => 404,
-                "expected" => [
-                    "http" => [
-                        "request" => [
-                            "method" => "GET",
-                            "url" => "https://httpbin.org/status/404",
+            '4xx_response' => [
+                'method' => 'GET',
+                'url' => 'https://httpbin.org/status/404',
+                'status' => 404,
+                'expected' => [
+                    'http' => [
+                        'request' => [
+                            'method' => 'GET',
+                            'url' => 'https://httpbin.org/status/404',
                         ],
-                        "response" => [
-                            "status" => 404,
+                        'response' => [
+                            'status' => 404,
                         ],
                     ],
-                    "fault" => null,
-                    "error" => true,
+                    'fault' => null,
+                    'error' => true,
                 ],
             ],
-            "5xx_response" => [
-                "method" => "GET",
-                "url" => "https://httpbin.org/status/502",
-                "status" => 502,
-                "expected" => [
-                    "http" => [
-                        "request" => [
-                            "method" => "GET",
-                            "url" => "https://httpbin.org/status/502",
+            '5xx_response' => [
+                'method' => 'GET',
+                'url' => 'https://httpbin.org/status/502',
+                'status' => 502,
+                'expected' => [
+                    'http' => [
+                        'request' => [
+                            'method' => 'GET',
+                            'url' => 'https://httpbin.org/status/502',
                         ],
-                        "response" => [
-                            "status" => 502,
+                        'response' => [
+                            'status' => 502,
                         ],
                     ],
-                    "fault" => true,
-                    "error" => null,
+                    'fault' => true,
+                    'error' => null,
                 ],
             ]
         ];
