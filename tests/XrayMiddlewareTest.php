@@ -177,8 +177,8 @@ class XrayMiddlewareTest extends FunctionalTestCase
     /**
      * @test
      * @dataProvider annotations_metadata_dataprovider
-     * @param array|null $annotations
-     * @param array|null $metadata
+     * @param array<string,string>|null $annotations
+     * @param array<string,string>|null $metadata
      * @throws \Exception
      * @throws GuzzleException
      */
