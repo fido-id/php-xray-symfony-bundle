@@ -216,9 +216,9 @@ class XrayMiddlewareTest extends FunctionalTestCase
         $httpSegment = $subsegments[0]->jsonSerialize();
 
         /* @phpstan-ignore-next-line */
-        self::assertArraySubset($annotations, $httpSegment['annotations'] ?? null);
+        self::assertArraySubset($annotations, $httpSegment['annotations'] ?? []);
         /* @phpstan-ignore-next-line */
-        self::assertArraySubset($metadata, $httpSegment['metadata'] ?? null);
+        self::assertArraySubset($metadata, $httpSegment['metadata'] ?? []);
     }
 
     /**
