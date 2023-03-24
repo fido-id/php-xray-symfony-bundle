@@ -20,16 +20,6 @@ class Configuration implements ConfigurationInterface
                     ->isRequired()
                 ->end() // scalarNode('segment_name')
 
-                ->arrayNode('clients')
-                    ->arrayPrototype()
-                        ->children()
-                            ->scalarNode('base_uri')
-                                ->isRequired()
-                            ->end() //scalarNode('base_uri')
-                        ->end() // children()
-                    ->end() // arrayPrototype()
-                ->end() // arrayNode('clients')
-
             ->end(); // children()
         return $treeBuilder;
     }

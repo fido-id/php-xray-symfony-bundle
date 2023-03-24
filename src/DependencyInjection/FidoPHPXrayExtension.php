@@ -25,9 +25,5 @@ class FidoPHPXrayExtension extends Extension
         $definition = $container->getDefinition(Segment::class);
         $definition->replaceArgument(0, $config['segment_name']);
 
-        foreach ($config['clients'] as $client_config) {
-            $definition = $container->getDefinition(Client::class);
-            $definition->replaceArgument(0, $client_config['base_uri']);
-        }
     }
 }
