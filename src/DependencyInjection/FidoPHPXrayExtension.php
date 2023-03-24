@@ -24,6 +24,5 @@ class FidoPHPXrayExtension extends Extension
 
         $definition = $container->getDefinition(Segment::class);
         $definition->replaceArgument(0, $config['segment_name']);
-
     }
 }
