@@ -1,10 +1,8 @@
 # fido-id/php-xray-symfony-bundle
-
-[![Build Status](https://github.com/fido-id/php-xray-symfony-bundle/actions/workflows/main.yaml/badge.svg)](https://github.com/fido-id/php-xray-symfony-bundle/actions/workflows/main.yaml)
+[![codecov](https://codecov.io/gh/fido-id/php-xray-symfony-bundle/branch/main/graph/badge.svg?token=h04cGNVGvx)](https://codecov.io/gh/fido-id/php-xray-symfony-bundle)
 [![PHP Version](https://img.shields.io/badge/php->=8.0-blue)](https://www.php.net/releases/8.0/en.php)
-[![Coverage Status][Master coverage image]](https://app.codecov.io/gh/fido-id/php-xray-symfony-bundle)
+[![CI](https://github.com/fido-id/php-xray-symfony-bundle/actions/workflows/main.yaml/badge.svg?branch=main)](https://github.com/fido-id/php-xray-symfony-bundle/actions/workflows/main.yaml)
 
-[Master coverage image]: https://codecov.io/gh/fido-id/php-xray-symfony-bundle/branch/master/graph/badge.svg?token=YSPMGJVP77
 
 A Symfony Bundle for [AWS X-Ray](https://docs.aws.amazon.com/xray/latest/devguide/aws-xray.html) for PHP 8.x
 [LICENSE](LICENSE.md)
