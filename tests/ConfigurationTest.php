@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests;
 
+use Fido\PHPXrayBundle\DependencyInjection\Configuration;
 use Symfony\Component\Config\Definition\NodeInterface;
 
 class ConfigurationTest extends FunctionalTestCase
@@ -13,7 +14,7 @@ class ConfigurationTest extends FunctionalTestCase
      */
     public function will_test_configuration(): void
     {
-        $configuration = new \Fido\PHPXrayBundle\DependencyInjection\Configuration();
+        $configuration = new Configuration();
         $treeBuilder = $configuration->getConfigTreeBuilder();
         $tree = $treeBuilder->buildTree();
 

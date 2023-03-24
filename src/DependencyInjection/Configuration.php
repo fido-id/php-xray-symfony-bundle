@@ -15,11 +15,9 @@ class Configuration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
             ->children()
-
                 ->scalarNode('segment_name')
                     ->isRequired()
                 ->end() // scalarNode('segment_name')
-
             ->end(); // children()
         return $treeBuilder;
     }
