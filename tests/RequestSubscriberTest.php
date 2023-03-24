@@ -88,7 +88,7 @@ class RequestSubscriberTest extends FunctionalTestCase
 
         $dispatcher->dispatch($event, KernelEvents::REQUEST);
 
-        self::assertMatchesRegularExpression('/^1-[0-9A-Fa-f]{8}-[0-9A-Fa-f]{24}$/', $segment->getTraceId());
+        self::assertMatchesRegularExpression('/^1-[0-9A-Fa-f]{8}-[0-9A-Fa-f]{24}$/', $segment->getTraceId() ?? '');
     }
 
     /**

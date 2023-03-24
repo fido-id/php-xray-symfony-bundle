@@ -63,7 +63,7 @@ service definition. In this way each request will be instrumented and the `trace
 client:
   class: GuzzleHttp\Client
   arguments:
-    - handler: '@GuzzleHttp\HandlerStack'
+    - handler: '@fido.guzzle.handler_stack'
 ```
 
 ## How to test the software
