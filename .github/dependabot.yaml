@@ -1,0 +1,12 @@
+version: 2
+updates:
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      # Check for updates managed by Composer once a week
+      interval: "weekly"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      # Check for updates once a week
+      interval: "weekly"
