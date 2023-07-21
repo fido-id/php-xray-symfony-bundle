@@ -38,7 +38,7 @@ class XrayMiddlewareTest extends FunctionalTestCase
         $segment->setTraceId('1-00000000-000000000000000000000001');
         $client->request(
             'GET',
-            'https://httpbin.org/status/200',
+            'https://httpbin.dmuth.org/status/200',
         );
         $segment->end();
 
@@ -51,7 +51,7 @@ class XrayMiddlewareTest extends FunctionalTestCase
 
         /** @var array{http: array{request: array{method: string,url: string,},response: array{status: int,}},fault: bool|null,error: bool|null} $httpSegment */
         self::assertEquals('GET', $httpSegment['http']['request']['method']);
-        self::assertEquals('https://httpbin.org/status/200', $httpSegment['http']['request']['url']);
+        self::assertEquals('https://httpbin.dmuth.org/status/200', $httpSegment['http']['request']['url']);
         self::assertEquals(200, $httpSegment['http']['response']['status']);
 
         self::assertStringMatchesFormat('Root=1-00000000-000000000000000000000001;Parent=%s;Sampled=1', $container[0]['request']->getHeader('X-Amzn-Trace-Id')[0]);
@@ -119,13 +119,13 @@ class XrayMiddlewareTest extends FunctionalTestCase
         return [
             '2xx_response' => [
                 'method' => 'GET',
-                'url' => 'https://httpbin.org/status/200',
+                'url' => 'https://httpbin.dmuth.org/status/200',
                 'status' => 200,
                 'expected' => [
                     'http' => [
                         'request' => [
                             'method' => 'GET',
-                            'url' => 'https://httpbin.org/status/200',
+                            'url' => 'https://httpbin.dmuth.org/status/200',
                         ],
                         'response' => [
                             'status' => 200,
@@ -137,13 +137,13 @@ class XrayMiddlewareTest extends FunctionalTestCase
             ],
             '4xx_response' => [
                 'method' => 'GET',
-                'url' => 'https://httpbin.org/status/404',
+                'url' => 'https://httpbin.dmuth.org/status/404',
                 'status' => 404,
                 'expected' => [
                     'http' => [
                         'request' => [
                             'method' => 'GET',
-                            'url' => 'https://httpbin.org/status/404',
+                            'url' => 'https://httpbin.dmuth.org/status/404',
                         ],
                         'response' => [
                             'status' => 404,
@@ -155,13 +155,13 @@ class XrayMiddlewareTest extends FunctionalTestCase
             ],
             '5xx_response' => [
                 'method' => 'GET',
-                'url' => 'https://httpbin.org/status/502',
+                'url' => 'https://httpbin.dmuth.org/status/502',
                 'status' => 502,
                 'expected' => [
                     'http' => [
                         'request' => [
                             'method' => 'GET',
-                            'url' => 'https://httpbin.org/status/502',
+                            'url' => 'https://httpbin.dmuth.org/status/502',
                         ],
                         'response' => [
                             'status' => 502,
@@ -201,7 +201,7 @@ class XrayMiddlewareTest extends FunctionalTestCase
         $segment->setTraceId('1-00000000-000000000000000000000001');
         $client->request(
             'GET',
-            'https://httpbin.org/status/200',
+            'https://httpbin.dmuth.org/status/200',
             [
                 'parent_segment' => $parentSegment,
                 'annotations' => $annotations,
