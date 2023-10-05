@@ -41,6 +41,10 @@ class XrayMiddleware
                 }
             }
 
+            $withContent = $options['content'] ?? false;
+            $withReason = $options['reason'] ?? true;
+            $withHeaders = $options['headers'] ?? true;
+
             $this->segment->addSubsegment($httpSegment);
 
             if (array_key_exists('parent_segment', $options)) {
@@ -52,8 +56,8 @@ class XrayMiddleware
 
             $response = $handler($request, $options);
 
-            $response->then(function (ResponseInterface $response) use ($httpSegment) {
-                $httpSegment->closeWithPsrResponse($response, withContent: false);
+            $response->then(function (ResponseInterface $response) use ($httpSegment, $withContent, $withReason, $withHeaders) {
+                $httpSegment->closeWithPsrResponse($response, withContent: $withContent, withReason: $withReason, withHeaders: $withHeaders);
             });
 
             return $response;
